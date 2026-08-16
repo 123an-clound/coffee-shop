@@ -28,11 +28,19 @@ h1, h2, h3, h4 {
   pointer-events: none;
 }
 
-/* Gentle lift + gold glow for interactive cards and buttons */
+/* Lift + gold glow for interactive cards and buttons */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px -8px rgba(201, 161, 91, 0.45);
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 20px 40px -10px rgba(201, 161, 91, 0.55);
+}
+
+/* Photo zoom-in on hover, used inside overflow-hidden card media wrappers */
+.hover-zoom-img img {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hover-lift:hover .hover-zoom-img img {
+  transform: scale(1.08);
 }

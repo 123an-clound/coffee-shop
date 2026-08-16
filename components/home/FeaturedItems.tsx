@@ -12,7 +12,7 @@ export function FeaturedItems({ items }: { items: MenuItem[] }) {
         {items.map((item, index) => (
           <FadeIn key={item.id} delay={index * 0.08}>
             <div className="hover-lift overflow-hidden rounded-lg bg-brand-card shadow-sm">
-              <div className="relative h-48 w-full">
+              <div className="hover-zoom-img relative h-48 w-full overflow-hidden">
                 {item.image_url ? (
                   <Image src={item.image_url} alt={item.name} fill className="object-cover" />
                 ) : (
