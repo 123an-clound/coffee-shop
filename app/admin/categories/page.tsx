@@ -14,6 +14,9 @@ import type { Category, CategoryInput } from '@/lib/types'
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [editing, setEditing] = useState<Category | null>(null)
+  // Bumped on every successful submit so the "new category" form (which has
+  // no category.id to key on) also remounts and clears after a create.
+  const [formVersion, setFormVersion] = useState(0)
 
   async function reload() {
     const supabase = createBrowserSupabaseClient()
@@ -31,6 +34,7 @@ export default function AdminCategoriesPage() {
       await createCategoryAction(input)
     }
     setEditing(null)
+    setFormVersion((v) => v + 1)
     await reload()
   }
 
@@ -44,7 +48,11 @@ export default function AdminCategoriesPage() {
       <h1 className="text-2xl font-semibold text-brand-forest">Quản lý danh mục</h1>
 
       <div className="mt-6 max-w-md">
-        <CategoryForm category={editing ?? undefined} onSubmit={handleSubmit} />
+        <CategoryForm
+          key={editing?.id ?? `new-${formVersion}`}
+          category={editing ?? undefined}
+          onSubmit={handleSubmit}
+        />
       </div>
 
       <table className="mt-10 w-full text-left text-sm">
