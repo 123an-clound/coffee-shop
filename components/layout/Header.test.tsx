@@ -39,6 +39,25 @@ describe('Header', () => {
     await user.click(toggle)
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(toggle).toHaveAttribute('aria-label', 'Đóng menu')
     expect(mobilePanel).not.toHaveClass('hidden')
+
+    const links = [
+      ['Trang chủ', '/'],
+      ['Menu', '/menu'],
+      ['Về chúng tôi', '/about'],
+      ['Không gian', '/gallery'],
+      ['Liên hệ', '/contact'],
+    ]
+    const mobileNav = within(mobilePanel)
+    for (const [label, href] of links) {
+      const link = mobileNav.getByRole('link', { name: label })
+      expect(link).toHaveAttribute('href', href)
+    }
+
+    await user.click(toggle)
+
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(mobilePanel).toHaveClass('hidden')
   })
 })
