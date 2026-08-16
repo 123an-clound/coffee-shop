@@ -36,8 +36,10 @@ create table public.admin_users (
 - RLS trên `categories` / `menu_items`:
   - `SELECT`: public (không cần đăng nhập) — phục vụ trang công khai.
   - `INSERT` / `UPDATE` / `DELETE`: chỉ khi `auth.uid()` tồn tại trong `admin_users`.
-- RLS trên `admin_users`: không cho client tự đọc/ghi (chỉ service role / thao tác thủ
-  công qua SQL khi cấp quyền admin mới).
+- RLS trên `admin_users`: `SELECT` chỉ cho phép user tự kiểm tra chính mình
+  (`using (auth.uid() = user_id)`) — đủ để middleware xác nhận quyền mà không lộ danh
+  sách admin khác. Không có policy `INSERT`/`UPDATE`/`DELETE` cho client (chỉ thao tác
+  thủ công qua SQL editor / service role khi cấp quyền admin mới).
 - Tài khoản admin đầu tiên: tạo qua Supabase Auth (email/password) rồi insert thủ công
   vào `admin_users` trong lúc setup — không tự phục vụ (self-serve) qua UI ở bản đầu.
 - Middleware Next.js bảo vệ mọi route `/admin/**`: kiểm tra có session Supabase hợp lệ
