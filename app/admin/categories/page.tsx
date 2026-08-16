@@ -14,6 +14,7 @@ import type { Category, CategoryInput } from '@/lib/types'
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [editing, setEditing] = useState<Category | null>(null)
+  const [error, setError] = useState<string | null>(null)
   // Bumped on every successful submit so the "new category" form (which has
   // no category.id to key on) also remounts and clears after a create.
   const [formVersion, setFormVersion] = useState(0)
@@ -28,19 +29,33 @@ export default function AdminCategoriesPage() {
   }, [])
 
   async function handleSubmit(input: CategoryInput) {
-    if (editing) {
-      await updateCategoryAction(editing.id, input)
-    } else {
-      await createCategoryAction(input)
+    try {
+      setError(null)
+      if (editing) {
+        await updateCategoryAction(editing.id, input)
+      } else {
+        await createCategoryAction(input)
+      }
+      setEditing(null)
+      setFormVersion((v) => v + 1)
+      await reload()
+    } catch {
+      setError('Có lỗi xảy ra, vui lòng thử lại.')
     }
-    setEditing(null)
-    setFormVersion((v) => v + 1)
-    await reload()
   }
 
   async function handleDelete(id: string) {
-    await deleteCategoryAction(id)
-    await reload()
+    try {
+      setError(null)
+      await deleteCategoryAction(id)
+      await reload()
+    } catch (err) {
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Có lỗi xảy ra, vui lòng thử lại.'
+      )
+    }
   }
 
   return (
@@ -53,6 +68,7 @@ export default function AdminCategoriesPage() {
           category={editing ?? undefined}
           onSubmit={handleSubmit}
         />
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       </div>
 
       <table className="mt-10 w-full text-left text-sm">
