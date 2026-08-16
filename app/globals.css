@@ -21,10 +21,18 @@ h1, h2, h3, h4 {
   @apply font-heading;
 }
 
-/* Soft warm glow used behind hero copy / CTAs to draw the eye without a hard edge */
+/* Soft warm glow used behind hero copy / CTAs to draw the eye without a hard
+   edge. The gradient itself fades to transparent, so we don't need a
+   filter: blur() — animating blur+scale together is expensive to
+   re-rasterize every frame; a plain gradient can animate opacity cheaply
+   (compositor-only) instead. */
 .ambient-glow {
-  background: radial-gradient(circle, rgba(201, 161, 91, 0.35), transparent 70%);
-  filter: blur(40px);
+  background: radial-gradient(
+    circle,
+    rgba(201, 161, 91, 0.5) 0%,
+    rgba(201, 161, 91, 0.25) 35%,
+    transparent 70%
+  );
   pointer-events: none;
 }
 

@@ -29,13 +29,13 @@ export function Hero() {
 
       <motion.div
         aria-hidden="true"
-        animate={{ opacity: [0.5, 0.9, 0.5], scale: [1, 1.15, 1] }}
+        animate={{ opacity: [0.5, 0.9, 0.5] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         className="ambient-glow absolute left-1/2 top-1/3 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2"
       />
       <motion.div
         aria-hidden="true"
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.2, 1] }}
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
         className="absolute bottom-10 right-1/4 h-64 w-64 rounded-full bg-brand-terracotta/30 blur-3xl"
       />
