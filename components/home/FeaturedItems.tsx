@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import type { MenuItem } from '@/lib/types'
 import { formatPriceVND } from '@/lib/utils/format-price'
+import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder'
 
 export function FeaturedItems({ items }: { items: MenuItem[] }) {
   return (
@@ -10,7 +11,16 @@ export function FeaturedItems({ items }: { items: MenuItem[] }) {
         {items.map((item) => (
           <div key={item.id} className="overflow-hidden rounded-lg bg-brand-card shadow-sm">
             <div className="relative h-48 w-full">
-              <Image src={item.image_url} alt={item.name} fill className="object-cover" />
+              {item.image_url ? (
+                <Image src={item.image_url} alt={item.name} fill className="object-cover" />
+              ) : (
+                <ImagePlaceholder name={item.name} />
+              )}
+              {!item.is_available && (
+                <span className="absolute right-2 top-2 rounded bg-brand-ink/80 px-2 py-1 text-xs text-brand-cream">
+                  Hết hàng
+                </span>
+              )}
             </div>
             <div className="p-4">
               <h3 className="font-heading text-lg">{item.name}</h3>
