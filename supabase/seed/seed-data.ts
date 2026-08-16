@@ -1,9 +1,31 @@
+// One-time / local reseed script for populating categories and menu_items.
+//
+// Since the Task 2 migration, INSERT on categories/menu_items is admin-only
+// via RLS, so this script requires SUPABASE_SERVICE_ROLE_KEY (found in the
+// Supabase dashboard under Project Settings -> API) to bypass RLS as a
+// privileged client. It falls back to NEXT_PUBLIC_SUPABASE_ANON_KEY only to
+// throw a clear error, since the anon key cannot write these tables.
+//
+// SUPABASE_SERVICE_ROLE_KEY must NEVER be committed, exposed to client code,
+// or used anywhere in the app's runtime. Run this manually from a developer
+// machine only, e.g.:
+//   SUPABASE_SERVICE_ROLE_KEY=... npx tsx supabase/seed/seed-data.ts
 import { createClient } from '@supabase/supabase-js'
 import type { CategoryInput, MenuItemInput } from '@/lib/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabase = createClient(supabaseUrl, supabaseKey)
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!serviceRoleKey) {
+  throw new Error(
+    'SUPABASE_SERVICE_ROLE_KEY is required to run this script. ' +
+      'The anon key cannot insert into categories/menu_items (admin-only RLS policy). ' +
+      'Find the service role key in the Supabase dashboard under Project Settings -> API, ' +
+      'and set it as an environment variable for this one-time run only — never commit it.'
+  )
+}
+
+const supabase = createClient(supabaseUrl, serviceRoleKey)
 
 const categories: CategoryInput[] = [
   { name: 'Cà phê phin truyền thống', slug: 'ca-phe-phin', display_order: 0 },
