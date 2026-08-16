@@ -1,7 +1,8 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Fraunces, Be_Vietnam_Pro } from 'next/font/google'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { SmoothScroll } from '@/components/layout/SmoothScroll'
 import './globals.css'
 
 const heading = Fraunces({
@@ -19,6 +20,12 @@ const body = Be_Vietnam_Pro({
 export const metadata: Metadata = {
   title: 'MỘC Coffee House',
   description: 'Chậm lại giữa nhịp sống — Cà phê & thiên nhiên',
+}
+
+// The site is designed for a light, warm palette only — declare this
+// explicitly so browsers with auto-dark-mode don't invert it.
+export const viewport: Viewport = {
+  colorScheme: 'light',
 }
 
 // Local-SEO structured data for the shop's single physical location.
@@ -58,9 +65,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <SmoothScroll>
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   )

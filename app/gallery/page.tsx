@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { FadeIn } from '@/components/motion/FadeIn'
 
 export const metadata = { title: 'Không gian quán — MỘC Coffee House' }
 
@@ -14,12 +15,16 @@ const GALLERY_IMAGES = [
 export default function GalleryPage() {
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="text-center text-3xl font-semibold text-brand-forest">Không gian quán</h1>
+      <FadeIn>
+        <h1 className="text-center text-3xl font-semibold text-brand-forest">Không gian quán</h1>
+      </FadeIn>
       <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {GALLERY_IMAGES.map((src) => (
-          <div key={src} className="relative h-64 w-full overflow-hidden rounded-lg">
-            <Image src={src} alt="Không gian MỘC Coffee House" fill className="object-cover" />
-          </div>
+        {GALLERY_IMAGES.map((src, index) => (
+          <FadeIn key={src} delay={(index % 3) * 0.1}>
+            <div className="hover-lift relative h-64 w-full overflow-hidden rounded-lg">
+              <Image src={src} alt="Không gian MỘC Coffee House" fill className="object-cover" />
+            </div>
+          </FadeIn>
         ))}
       </div>
     </main>

@@ -5,7 +5,7 @@ import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder'
 
 export function MenuItemCard({ item }: { item: MenuItem }) {
   return (
-    <article className="overflow-hidden rounded-lg bg-brand-card shadow-sm">
+    <article className="hover-lift overflow-hidden rounded-lg bg-brand-card shadow-sm">
       <div className="relative h-40 w-full">
         {item.image_url ? (
           <Image src={item.image_url} alt={item.name} fill className="object-cover" />

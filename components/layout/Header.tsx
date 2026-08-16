@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 const NAV_LINKS = [
@@ -13,9 +13,23 @@ const NAV_LINKS = [
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    function onScroll() {
+      setIsScrolled(window.scrollY > 8)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-forest/10 bg-brand-cream/95 backdrop-blur">
+    <header
+      className={`sticky top-0 z-50 border-b border-brand-forest/10 bg-brand-cream/95 backdrop-blur transition-shadow duration-300 ${
+        isScrolled ? 'shadow-md shadow-brand-ink/5' : ''
+      }`}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="font-heading text-xl font-semibold text-brand-forest">
           MỘC Coffee House
