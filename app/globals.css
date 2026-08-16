@@ -52,3 +52,48 @@ h1, h2, h3, h4 {
 .hover-lift:hover .hover-zoom-img img {
   transform: scale(1.08);
 }
+
+/* Fade-up entrance animation — plain CSS keyframes (not framer-motion) that
+   run as soon as the element paints, always applied from the very first
+   render (never toggled on by client-side JS after mount). Some browser
+   extensions that rewrite page styles (e.g. forced dark-mode tools) can
+   freeze animations that only start via a post-mount class change, so this
+   deliberately avoids that pattern. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-up {
+  animation: fade-up 0.8s ease-out forwards;
+}
+
+@keyframes hero-glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+.hero-glow-pulse {
+  animation: hero-glow-pulse 6s ease-in-out infinite;
+}
+
+@keyframes hero-glow-pulse-2 {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+.hero-glow-pulse-2 {
+  animation: hero-glow-pulse-2 5s ease-in-out infinite 1s;
+}
+
+@keyframes hero-sparkle {
+  0%, 100% { opacity: 0; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-18px); }
+}
+.hero-sparkle {
+  opacity: 0;
+  animation: hero-sparkle 3.2s ease-in-out infinite;
+}
