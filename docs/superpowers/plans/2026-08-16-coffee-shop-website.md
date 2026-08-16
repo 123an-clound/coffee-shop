@@ -1233,7 +1233,7 @@ git commit -m "feat: add price formatting and menu filtering utilities with test
 - Create: `supabase/seed/seed-data.ts`
 
 **Interfaces:**
-- Consumes: `createCategory`, `createMenuItem` (Task 4), `CategoryInput`, `MenuItemInput` (Task 3).
+- Consumes: `CategoryInput`, `MenuItemInput` (Task 3) for the shape of seeded rows. This is a standalone Node script run once via `npx tsx`, not imported by the app, so it talks to Supabase directly via `@supabase/supabase-js`'s `createClient` rather than through the `lib/data/*` functions from Task 4.
 - Produces: populated `categories` and `menu_items` tables, consumed by every public page (Tasks 8-10) and the admin list pages (Task 15).
 
 - [ ] **Step 1: Write the seed script**
