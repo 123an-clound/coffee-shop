@@ -5,6 +5,7 @@ function normalize(text: string): string {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
+    .replace(/đ/g, 'd')
 }
 
 export function filterMenuItems(

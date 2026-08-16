@@ -44,4 +44,9 @@ describe('filterMenuItems', () => {
     const result = filterMenuItems(items, { categoryId: 'cat-1', search: 'bac' })
     expect(result.map((i) => i.id)).toEqual(['3'])
   })
+
+  it('normalizes Vietnamese Đ/đ, which NFD does not decompose, in search', () => {
+    const result = filterMenuItems(items, { search: 'den' })
+    expect(result.map((i) => i.id)).toEqual(['1'])
+  })
 })
