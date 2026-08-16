@@ -29,6 +29,9 @@ describe('getCategories', () => {
     const result = await getCategories(supabase as any)
 
     expect(supabase.from).toHaveBeenCalledWith('categories')
+    expect(supabase._select).toHaveBeenCalledWith('*')
+    const orderSpy = supabase._select.mock.results[0].value.order
+    expect(orderSpy).toHaveBeenCalledWith('display_order', { ascending: true })
     expect(result).toEqual(categories)
   })
 
@@ -64,6 +67,8 @@ describe('updateCategory', () => {
     const result = await updateCategory(supabase as any, '1', { name: 'Trà sữa' })
 
     expect(supabase._update).toHaveBeenCalledWith({ name: 'Trà sữa' })
+    const eqSpy = supabase._update.mock.results[0].value.eq
+    expect(eqSpy).toHaveBeenCalledWith('id', '1')
     expect(result).toEqual(updated)
   })
 })
@@ -73,5 +78,7 @@ describe('deleteCategory', () => {
     const supabase = makeSupabaseMock({ data: null, error: null })
     await deleteCategory(supabase as any, '1')
     expect(supabase._delete).toHaveBeenCalled()
+    const eqSpy = supabase._delete.mock.results[0].value.eq
+    expect(eqSpy).toHaveBeenCalledWith('id', '1')
   })
 })
