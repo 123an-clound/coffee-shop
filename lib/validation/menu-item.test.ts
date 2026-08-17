@@ -6,7 +6,7 @@ const validInput = {
   name: 'Cà Phê Sữa Đá',
   description: 'Vị béo ngậy của sữa đặc hòa cùng cà phê phin đậm đà.',
   price: 45000,
-  image_url: 'https://example.supabase.co/storage/v1/object/public/menu-images/a.jpg',
+  image_url: 'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/a.jpg',
   is_available: true,
   is_featured: false,
   display_order: 0,
@@ -56,6 +56,12 @@ describe('parseMenuItemInput', () => {
   it('rejects an image_url that is not http(s)', () => {
     expect(() =>
       parseMenuItemInput({ ...validInput, image_url: 'javascript:alert(1)' })
+    ).toThrow()
+  })
+
+  it('rejects an image_url on a host that is not in the allowlist', () => {
+    expect(() =>
+      parseMenuItemInput({ ...validInput, image_url: 'https://evil.example.com/x.jpg' })
     ).toThrow()
   })
 

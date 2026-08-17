@@ -3,8 +3,11 @@ import nextConfig from './next.config.js'
 
 describe('next.config headers', () => {
   it('applies baseline security headers to every route', async () => {
-    const rules = await nextConfig.headers()
-    const global = rules.find((r: { source: string }) => r.source === '/(.*)')
+    const rules = (await nextConfig.headers!()) as Array<{
+      source: string
+      headers: Array<{ key: string; value: string }>
+    }>
+    const global = rules.find((r) => r.source === '/(.*)')!
     expect(global).toBeDefined()
 
     const byKey = Object.fromEntries(

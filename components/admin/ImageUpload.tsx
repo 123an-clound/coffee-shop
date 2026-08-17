@@ -17,21 +17,30 @@ export function ImageUpload({
     const file = e.target.files?.[0]
     if (!file) return
 
-    setUploading(true)
-    setError(null)
-
-    const formData = new FormData()
-    formData.set('file', file)
-    const result = await uploadMenuImageAction(formData)
-
-    if ('error' in result) {
-      setError(result.error)
-      setUploading(false)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Ảnh không được vượt quá 5MB.')
       return
     }
 
-    onChange(result.url)
-    setUploading(false)
+    setUploading(true)
+    setError(null)
+
+    try {
+      const formData = new FormData()
+      formData.set('file', file)
+      const result = await uploadMenuImageAction(formData)
+
+      if ('error' in result) {
+        setError(result.error)
+        return
+      }
+
+      onChange(result.url)
+    } catch {
+      setError('Tải ảnh lên thất bại. Vui lòng thử lại.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   return (

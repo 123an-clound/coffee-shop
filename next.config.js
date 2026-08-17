@@ -6,6 +6,11 @@ const nextConfig = {
       { protocol: 'https', hostname: 'xsspvdgnhelzprcqaiek.supabase.co' },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '6mb',
+    },
+  },
   async headers() {
     const supabaseHost = 'https://xsspvdgnhelzprcqaiek.supabase.co'
     // script-src needs 'unsafe-inline' because Next.js App Router injects
