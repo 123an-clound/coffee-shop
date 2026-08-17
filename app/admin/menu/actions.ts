@@ -4,12 +4,14 @@ import { revalidatePath } from 'next/cache'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/supabase/require-admin'
 import { createMenuItem, updateMenuItem, deleteMenuItem } from '@/lib/data/menu-items'
+import { parseMenuItemInput } from '@/lib/validation/menu-item'
 import type { MenuItemInput } from '@/lib/types'
 
 export async function createMenuItemAction(input: MenuItemInput) {
   const supabase = await createServerSupabaseClient()
   await requireAdmin(supabase)
-  await createMenuItem(supabase, input)
+  const validated = parseMenuItemInput(input)
+  await createMenuItem(supabase, validated)
   revalidatePath('/admin/menu')
   revalidatePath('/menu')
   revalidatePath('/')
@@ -18,7 +20,8 @@ export async function createMenuItemAction(input: MenuItemInput) {
 export async function updateMenuItemAction(id: string, input: MenuItemInput) {
   const supabase = await createServerSupabaseClient()
   await requireAdmin(supabase)
-  await updateMenuItem(supabase, id, input)
+  const validated = parseMenuItemInput(input)
+  await updateMenuItem(supabase, id, validated)
   revalidatePath('/admin/menu')
   revalidatePath('/menu')
   revalidatePath('/')
