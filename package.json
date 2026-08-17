@@ -21,6 +21,9 @@
     "tailwind-merge": "^2.5.2",
     "zod": "^4.4.3"
   },
+  "overrides": {
+    "sharp": "^0.35.3"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
