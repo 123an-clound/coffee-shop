@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type ChangeEvent } from 'react'
-import { createBrowserSupabaseClient } from '@/lib/supabase/client'
+import { uploadMenuImageAction } from '@/app/admin/menu/upload-image-action'
 
 export function ImageUpload({
   value,
@@ -20,18 +20,17 @@ export function ImageUpload({
     setUploading(true)
     setError(null)
 
-    const supabase = createBrowserSupabaseClient()
-    const path = `${Date.now()}-${file.name}`
-    const { error: uploadError } = await supabase.storage.from('menu-images').upload(path, file)
+    const formData = new FormData()
+    formData.set('file', file)
+    const result = await uploadMenuImageAction(formData)
 
-    if (uploadError) {
-      setError('Tải ảnh lên thất bại. Vui lòng thử lại.')
+    if ('error' in result) {
+      setError(result.error)
       setUploading(false)
       return
     }
 
-    const { data } = supabase.storage.from('menu-images').getPublicUrl(path)
-    onChange(data.publicUrl)
+    onChange(result.url)
     setUploading(false)
   }
 
