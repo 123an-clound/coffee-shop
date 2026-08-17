@@ -4,12 +4,14 @@ import { revalidatePath } from 'next/cache'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/supabase/require-admin'
 import { createCategory, updateCategory, deleteCategory } from '@/lib/data/categories'
+import { parseCategoryInput } from '@/lib/validation/category'
 import type { CategoryInput } from '@/lib/types'
 
 export async function createCategoryAction(input: CategoryInput) {
   const supabase = await createServerSupabaseClient()
   await requireAdmin(supabase)
-  await createCategory(supabase, input)
+  const validated = parseCategoryInput(input)
+  await createCategory(supabase, validated)
   revalidatePath('/admin/categories')
   revalidatePath('/menu')
 }
@@ -17,7 +19,8 @@ export async function createCategoryAction(input: CategoryInput) {
 export async function updateCategoryAction(id: string, input: CategoryInput) {
   const supabase = await createServerSupabaseClient()
   await requireAdmin(supabase)
-  await updateCategory(supabase, id, input)
+  const validated = parseCategoryInput(input)
+  await updateCategory(supabase, id, validated)
   revalidatePath('/admin/categories')
   revalidatePath('/menu')
 }
