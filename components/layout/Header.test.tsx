@@ -1,9 +1,19 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Header } from './Header'
 
+const { usePathnameMock } = vi.hoisted(() => ({ usePathnameMock: vi.fn() }))
+
+vi.mock('next/navigation', () => ({
+  usePathname: usePathnameMock,
+}))
+
 describe('Header', () => {
+  beforeEach(() => {
+    usePathnameMock.mockReturnValue('/')
+  })
+
   it('renders the brand name and all nav links', () => {
     render(<Header />)
 
@@ -24,6 +34,27 @@ describe('Header', () => {
       const link = desktopNav.getByRole('link', { name: label })
       expect(link).toHaveAttribute('href', href)
     }
+  })
+
+  it('marks the link matching the current page as active, in both nav panels', async () => {
+    usePathnameMock.mockReturnValue('/menu')
+    const user = userEvent.setup()
+    render(<Header />)
+
+    const desktopNav = within(screen.getByTestId('desktop-nav'))
+    const activeDesktopLink = desktopNav.getByRole('link', { name: 'Menu' })
+    expect(activeDesktopLink).toHaveAttribute('aria-current', 'page')
+    expect(activeDesktopLink).toHaveClass('text-brand-terracotta')
+
+    const inactiveDesktopLink = desktopNav.getByRole('link', { name: 'Trang chủ' })
+    expect(inactiveDesktopLink).not.toHaveAttribute('aria-current')
+    expect(inactiveDesktopLink).toHaveClass('text-brand-ink')
+
+    await user.click(screen.getByRole('button', { name: 'Mở menu' }))
+    const mobileNav = within(screen.getByTestId('mobile-nav'))
+    const activeMobileLink = mobileNav.getByRole('link', { name: 'Menu' })
+    expect(activeMobileLink).toHaveAttribute('aria-current', 'page')
+    expect(activeMobileLink).toHaveClass('text-brand-terracotta')
   })
 
   it('toggles the mobile nav panel when the menu button is clicked', async () => {

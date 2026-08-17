@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const NAV_LINKS = [
   { label: 'Trang chủ', href: '/' },
@@ -14,6 +15,7 @@ const NAV_LINKS = [
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     function onScroll() {
@@ -36,15 +38,21 @@ export function Header() {
         </Link>
 
         <nav data-testid="desktop-nav" className="hidden md:flex md:gap-6">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="relative text-sm font-medium text-brand-ink after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-brand-terracotta after:transition-all after:duration-300 hover:text-brand-terracotta hover:after:w-full"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive ? 'page' : undefined}
+                className={`relative text-sm font-medium after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:bg-brand-terracotta after:transition-all after:duration-300 hover:text-brand-terracotta hover:after:w-full ${
+                  isActive ? 'text-brand-terracotta after:w-full' : 'text-brand-ink after:w-0'
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
         <button
@@ -80,16 +88,22 @@ export function Header() {
         data-testid="mobile-nav"
         className={`${isMenuOpen ? 'flex' : 'hidden'} flex-col gap-1 border-t border-brand-forest/10 bg-brand-cream px-6 py-4 md:hidden`}
       >
-        {NAV_LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setIsMenuOpen(false)}
-            className="rounded px-2 py-2 text-sm font-medium text-brand-ink hover:bg-brand-forest/10 hover:text-brand-terracotta"
-          >
-            {link.label}
-          </Link>
-        ))}
+        {NAV_LINKS.map((link) => {
+          const isActive = pathname === link.href
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsMenuOpen(false)}
+              aria-current={isActive ? 'page' : undefined}
+              className={`rounded px-2 py-2 text-sm font-medium hover:bg-brand-forest/10 hover:text-brand-terracotta ${
+                isActive ? 'bg-brand-forest/10 text-brand-terracotta' : 'text-brand-ink'
+              }`}
+            >
+              {link.label}
+            </Link>
+          )
+        })}
       </nav>
     </header>
   )
