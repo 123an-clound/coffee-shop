@@ -1,37 +1,50 @@
-import Image from 'next/image'
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 import type { MenuItem } from '@/lib/types'
 import { formatPriceVND } from '@/lib/utils/format-price'
-import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder'
-import { FadeIn } from '@/components/motion/FadeIn'
+import { MenuImage } from '@/components/ui/MenuImage'
 
-export function FeaturedItems({ items }: { items: MenuItem[] }) {
+export function FeaturedItems({
+  items,
+  title = 'Món nổi bật',
+}: {
+  items: MenuItem[]
+  title?: string
+}) {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-16">
-      <h2 className="text-center text-3xl font-semibold text-brand-forest">Món nổi bật</h2>
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((item, index) => (
-          <FadeIn key={item.id} delay={index * 0.08}>
-            <div className="hover-lift overflow-hidden rounded-lg bg-brand-card shadow-sm">
-              <div className="hover-zoom-img relative h-48 w-full overflow-hidden">
-                {item.image_url ? (
-                  <Image src={item.image_url} alt={item.name} fill className="object-cover" />
-                ) : (
-                  <ImagePlaceholder name={item.name} />
-                )}
-                {!item.is_available && (
-                  <span className="absolute right-2 top-2 rounded bg-brand-ink/80 px-2 py-1 text-xs text-brand-cream">
-                    Hết hàng
-                  </span>
-                )}
-              </div>
-              <div className="p-4">
-                <h3 className="font-heading text-lg">{item.name}</h3>
-                <p className="mt-1 text-brand-terracotta">{formatPriceVND(item.price)}</p>
-              </div>
-            </div>
-          </FadeIn>
-        ))}
+    <section id="featured" className="site-section featured-section" aria-labelledby="featured-title">
+      <div className="section-heading section-heading--spread">
+        <div>
+          <p className="section-kicker">02 / THỰC ĐƠN</p>
+          <h2 id="featured-title" className="display-title">{title}</h2>
+        </div>
+        <Link className="text-link" href="/menu">Xem tất cả món <ArrowUpRight aria-hidden="true" size={18} /></Link>
       </div>
+      {items.length ? (
+        <div className="featured-grid">
+          {items.map((item, index) => (
+            <article className="featured-item" key={item.id}>
+              <div className="featured-item__media">
+                <MenuImage
+                  src={item.image_url}
+                  name={item.name}
+                  sizes={index === 0 ? '(max-width: 800px) 100vw, 40vw' : '(max-width: 800px) 50vw, 25vw'}
+                />
+                {!item.is_available && <span className="item-status">Tạm hết</span>}
+              </div>
+              <div className="featured-item__details">
+                <div>
+                  <span className="featured-item__index">{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{item.name}</h3>
+                </div>
+                <p>{formatPriceVND(item.price)}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="site-empty">Các món nổi bật sẽ được cập nhật sớm.</p>
+      )}
     </section>
   )
 }

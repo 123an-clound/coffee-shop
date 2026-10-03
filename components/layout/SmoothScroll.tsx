@@ -5,22 +5,40 @@ import Lenis from 'lenis'
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => 1 - Math.pow(1 - t, 3),
-      smoothWheel: true,
-    })
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let lenis: Lenis | undefined
+    let frameId = 0
 
-    let frameId: number
-    function raf(time: number) {
-      lenis.raf(time)
+    function start() {
+      if (preference.matches || lenis) return
+      lenis = new Lenis({
+        duration: 1.05,
+        easing: (t: number) => 1 - Math.pow(1 - t, 3),
+        smoothWheel: true,
+      })
+      const raf = (time: number) => {
+        lenis?.raf(time)
+        frameId = requestAnimationFrame(raf)
+      }
       frameId = requestAnimationFrame(raf)
     }
-    frameId = requestAnimationFrame(raf)
 
-    return () => {
+    function stop() {
       cancelAnimationFrame(frameId)
-      lenis.destroy()
+      lenis?.destroy()
+      lenis = undefined
+    }
+
+    function onPreferenceChange() {
+      if (preference.matches) stop()
+      else start()
+    }
+
+    start()
+    preference.addEventListener('change', onPreferenceChange)
+    return () => {
+      preference.removeEventListener('change', onPreferenceChange)
+      stop()
     }
   }, [])
 

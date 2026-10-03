@@ -1,27 +1,21 @@
-import Image from 'next/image'
 import type { MenuItem } from '@/lib/types'
 import { formatPriceVND } from '@/lib/utils/format-price'
-import { ImagePlaceholder } from '@/components/ui/ImagePlaceholder'
+import { MenuImage } from '@/components/ui/MenuImage'
 
-export function MenuItemCard({ item }: { item: MenuItem }) {
+export function MenuItemCard({ item, index }: { item: MenuItem; index?: number }) {
   return (
-    <article className="hover-lift overflow-hidden rounded-lg bg-brand-card shadow-sm">
-      <div className="hover-zoom-img relative h-40 w-full overflow-hidden">
-        {item.image_url ? (
-          <Image src={item.image_url} alt={item.name} fill className="object-cover" />
-        ) : (
-          <ImagePlaceholder name={item.name} />
-        )}
-        {!item.is_available && (
-          <span className="absolute right-2 top-2 rounded bg-brand-ink/80 px-2 py-1 text-xs text-brand-cream">
-            Hết hàng
-          </span>
-        )}
+    <article className="menu-item">
+      <div className="menu-item__media">
+        <MenuImage src={item.image_url} name={item.name} sizes="(max-width: 640px) 32vw, (max-width: 900px) 22vw, 14vw" />
       </div>
-      <div className="p-4">
-        <h3 className="font-heading text-lg">{item.name}</h3>
-        <p className="mt-1 text-sm text-brand-ink/70">{item.description}</p>
-        <p className="mt-2 font-medium text-brand-terracotta">{formatPriceVND(item.price)}</p>
+      <div className="menu-item__content">
+        <span className="menu-item__index">{index ? String(index).padStart(2, '0') : '—'}</span>
+        <div className="menu-item__title-row">
+          <h2>{item.name}</h2>
+          <span>{formatPriceVND(item.price)}</span>
+        </div>
+        {item.description && <p>{item.description}</p>}
+        {!item.is_available && <span className="menu-item__status">Tạm hết</span>}
       </div>
     </article>
   )

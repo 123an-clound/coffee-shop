@@ -24,13 +24,13 @@ export function ContactForm() {
   }
 
   if (submitted) {
-    return <p className="text-brand-forest">Cảm ơn bạn! Chúng tôi sẽ liên hệ lại sớm nhất.</p>
+    return <p className="contact-form__success" role="status">Cảm ơn bạn! Chúng tôi sẽ liên hệ lại sớm nhất.</p>
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="contact-form">
       <div>
-        <label htmlFor="contact-name" className="block text-sm font-medium">
+        <label htmlFor="contact-name">
           Tên
         </label>
         <input
@@ -38,11 +38,11 @@ export function ContactForm() {
           aria-label="Tên"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 w-full rounded border border-brand-forest/20 px-3 py-2"
+          className="contact-form__input"
         />
       </div>
       <div>
-        <label htmlFor="contact-email" className="block text-sm font-medium">
+        <label htmlFor="contact-email">
           Email
         </label>
         <input
@@ -51,11 +51,11 @@ export function ContactForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded border border-brand-forest/20 px-3 py-2"
+          className="contact-form__input"
         />
       </div>
       <div>
-        <label htmlFor="contact-message" className="block text-sm font-medium">
+        <label htmlFor="contact-message">
           Lời nhắn
         </label>
         <textarea
@@ -64,13 +64,13 @@ export function ContactForm() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
-          className="mt-1 w-full rounded border border-brand-forest/20 px-3 py-2"
+          className="contact-form__input"
         />
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="contact-form__error" role="alert">{error}</p>}
       <button
         type="submit"
-        className="rounded-full bg-brand-forest px-6 py-3 text-sm font-medium text-brand-cream hover:opacity-90"
+        className="site-button site-button--dark"
       >
         Gửi
       </button>

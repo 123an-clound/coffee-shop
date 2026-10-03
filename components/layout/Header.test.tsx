@@ -44,17 +44,17 @@ describe('Header', () => {
     const desktopNav = within(screen.getByTestId('desktop-nav'))
     const activeDesktopLink = desktopNav.getByRole('link', { name: 'Menu' })
     expect(activeDesktopLink).toHaveAttribute('aria-current', 'page')
-    expect(activeDesktopLink).toHaveClass('text-brand-terracotta')
+    expect(activeDesktopLink).toHaveClass('site-nav__link--active')
 
     const inactiveDesktopLink = desktopNav.getByRole('link', { name: 'Trang chủ' })
     expect(inactiveDesktopLink).not.toHaveAttribute('aria-current')
-    expect(inactiveDesktopLink).toHaveClass('text-brand-ink')
+    expect(inactiveDesktopLink).not.toHaveClass('site-nav__link--active')
 
     await user.click(screen.getByRole('button', { name: 'Mở menu' }))
     const mobileNav = within(screen.getByTestId('mobile-nav'))
     const activeMobileLink = mobileNav.getByRole('link', { name: 'Menu' })
     expect(activeMobileLink).toHaveAttribute('aria-current', 'page')
-    expect(activeMobileLink).toHaveClass('text-brand-terracotta')
+    expect(activeMobileLink).toHaveClass('site-mobile-nav__link--active')
   })
 
   it('toggles the mobile nav panel when the menu button is clicked', async () => {

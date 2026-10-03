@@ -13,20 +13,24 @@ const nextConfig = {
   },
   async headers() {
     const supabaseHost = 'https://xsspvdgnhelzprcqaiek.supabase.co'
+    const scriptSrc = process.env.NODE_ENV === 'development'
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+      : "script-src 'self' 'unsafe-inline'"
     // script-src needs 'unsafe-inline' because Next.js App Router injects
     // inline bootstrap/hydration <script> tags (the __next_f RSC-streaming
     // payload) that a strict script-src would block, breaking hydration on
     // every page. Removing 'unsafe-inline' requires a nonce-based CSP wired
     // through middleware.ts — out of scope for this pass; every other
     // directive below still meaningfully reduces blast radius (no remote
-    // script/object sources, no framing, no foreign form submission).
+    // script/object sources, no foreign form submission).
     const csp = [
       "default-src 'self'",
       `img-src 'self' data: blob: https://images.unsplash.com ${supabaseHost}`,
       `connect-src 'self' ${supabaseHost}`,
-      "script-src 'self' 'unsafe-inline'",
+      scriptSrc,
       "style-src 'self' 'unsafe-inline'",
       "font-src 'self' data:",
+      'frame-src https://www.google.com https://maps.google.com',
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",

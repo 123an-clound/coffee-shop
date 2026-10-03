@@ -1,8 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { getSiteSettings } from '@/lib/site-settings'
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const { seo } = await getSiteSettings()
+  const baseUrl = seo.siteUrl.replace(/\/$/, '')
   return {
     rules: [{ userAgent: '*', allow: '/', disallow: '/admin' }],
-    sitemap: 'https://moccoffee.vn/sitemap.xml',
+    sitemap: `${baseUrl}/sitemap.xml`,
   }
 }

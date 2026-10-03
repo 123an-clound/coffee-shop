@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { getSiteSettings } from '@/lib/site-settings'
 
-const BASE_URL = 'https://moccoffee.vn'
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { seo } = await getSiteSettings()
+  const baseUrl = seo.siteUrl.replace(/\/$/, '')
   const routes = ['', '/menu', '/about', '/gallery', '/contact']
   return routes.map((route) => ({
-    url: `${BASE_URL}${route}`,
-    lastModified: new Date().toISOString(),
+    url: `${baseUrl}${route}`,
   }))
 }

@@ -20,6 +20,12 @@ describe('next.config headers', () => {
     expect(byKey['Permissions-Policy']).toContain('camera=()')
     expect(byKey['Strict-Transport-Security']).toContain('max-age=')
     expect(byKey['Content-Security-Policy']).toContain("frame-ancestors 'none'")
+    expect(byKey['Content-Security-Policy']).toContain('frame-src https://www.google.com https://maps.google.com')
     expect(byKey['Content-Security-Policy']).toContain("default-src 'self'")
+    if (process.env.NODE_ENV === 'development') {
+      expect(byKey['Content-Security-Policy']).toContain("'unsafe-eval'")
+    } else {
+      expect(byKey['Content-Security-Policy']).not.toContain("'unsafe-eval'")
+    }
   })
 })
