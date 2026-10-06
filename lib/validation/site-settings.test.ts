@@ -12,7 +12,7 @@ describe('siteSettingsSchema', () => {
   })
 
   it('rejects images outside the supported public storage path', () => {
-    const badImage = 'https://xsspvdgnhelzprcqaiek.supabase.co/auth/v1/verify?token=secret'
+    const badImage = 'https://jtizooyjnllostamffpp.supabase.co/auth/v1/verify?token=secret'
     const result = siteSettingsSchema.safeParse(withSettings({
       home: { ...DEFAULT_SITE_SETTINGS.home, heroImageUrl: badImage },
     }))

@@ -30,7 +30,7 @@ const JPEG_BYTES = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0, 0, 0, 0])
 
 function makeSupabaseMock({
   uploadResult = { error: null },
-  publicUrl = 'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/x.jpg',
+  publicUrl = 'https://jtizooyjnllostamffpp.supabase.co/storage/v1/object/public/menu-images/x.jpg',
 }: {
   uploadResult?: { error: unknown }
   publicUrl?: string
@@ -73,7 +73,7 @@ describe('uploadMenuImageAction', () => {
 
   it('uploads a valid JPEG under a random storage key and returns its public URL', async () => {
     const publicUrl =
-      'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/generated.jpg'
+      'https://jtizooyjnllostamffpp.supabase.co/storage/v1/object/public/menu-images/generated.jpg'
     const supabase = makeSupabaseMock({ publicUrl })
     vi.mocked(createServerSupabaseClient).mockResolvedValue(supabase as never)
 

@@ -29,7 +29,7 @@ function isAllowedImageUrl(value: string) {
     try {
       return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').hostname
     } catch {
-      return 'xsspvdgnhelzprcqaiek.supabase.co'
+      return 'jtizooyjnllostamffpp.supabase.co'
     }
   })()
   return url.hostname === 'images.unsplash.com' || (

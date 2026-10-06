@@ -28,7 +28,7 @@ describe('getCategories', () => {
 
     const result = await getCategories(supabase as any)
 
-    expect(supabase.from).toHaveBeenCalledWith('categories')
+    expect(supabase.from).toHaveBeenCalledWith('coffee_categories')
     expect(supabase._select).toHaveBeenCalledWith('*')
     const orderSpy = supabase._select.mock.results[0].value.order
     expect(orderSpy).toHaveBeenCalledWith('display_order', { ascending: true })

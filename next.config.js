@@ -1,9 +1,13 @@
+const supabaseUrl = new URL(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jtizooyjnllostamffpp.supabase.co'
+)
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'xsspvdgnhelzprcqaiek.supabase.co' },
+      { protocol: 'https', hostname: supabaseUrl.hostname },
     ],
   },
   experimental: {
@@ -12,7 +16,7 @@ const nextConfig = {
     },
   },
   async headers() {
-    const supabaseHost = 'https://xsspvdgnhelzprcqaiek.supabase.co'
+    const supabaseHost = supabaseUrl.origin
     const scriptSrc = process.env.NODE_ENV === 'development'
       ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
       : "script-src 'self' 'unsafe-inline'"

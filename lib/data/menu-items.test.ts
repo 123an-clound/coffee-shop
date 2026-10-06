@@ -39,7 +39,7 @@ describe('getMenuItems', () => {
 
     const result = await getMenuItems(supabase)
 
-    expect(supabase.from).toHaveBeenCalledWith('menu_items')
+    expect(supabase.from).toHaveBeenCalledWith('coffee_menu_items')
     expect(result).toEqual([sampleItem])
   })
 

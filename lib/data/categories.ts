@@ -3,7 +3,7 @@ import type { Category, CategoryInput } from '@/lib/types'
 
 export async function getCategories(supabase: SupabaseClient): Promise<Category[]> {
   const { data, error } = await supabase
-    .from('categories')
+    .from('coffee_categories')
     .select('*')
     .order('display_order', { ascending: true })
 
@@ -15,7 +15,7 @@ export async function createCategory(
   supabase: SupabaseClient,
   input: CategoryInput
 ): Promise<Category> {
-  const { data, error } = await supabase.from('categories').insert([input]).select().single()
+  const { data, error } = await supabase.from('coffee_categories').insert([input]).select().single()
   if (error) throw error
   return data as Category
 }
@@ -26,7 +26,7 @@ export async function updateCategory(
   input: Partial<CategoryInput>
 ): Promise<Category> {
   const { data, error } = await supabase
-    .from('categories')
+    .from('coffee_categories')
     .update(input)
     .eq('id', id)
     .select()
@@ -36,6 +36,6 @@ export async function updateCategory(
 }
 
 export async function deleteCategory(supabase: SupabaseClient, id: string): Promise<void> {
-  const { error } = await supabase.from('categories').delete().eq('id', id)
+  const { error } = await supabase.from('coffee_categories').delete().eq('id', id)
   if (error) throw error
 }

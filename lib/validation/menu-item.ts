@@ -1,7 +1,10 @@
 import { z } from 'zod'
 import type { MenuItemInput } from '@/lib/types'
 
-const ALLOWED_IMAGE_HOSTS = ['images.unsplash.com', 'xsspvdgnhelzprcqaiek.supabase.co']
+const ALLOWED_IMAGE_HOSTS = [
+  'images.unsplash.com',
+  new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jtizooyjnllostamffpp.supabase.co').hostname,
+]
 
 export const menuItemInputSchema = z.object({
   category_id: z.string().uuid(),

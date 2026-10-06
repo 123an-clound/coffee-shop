@@ -9,7 +9,7 @@ describe('isAdminUser', () => {
     const supabase = { from: vi.fn().mockReturnValue({ select }) } as any
 
     expect(await isAdminUser(supabase, 'u1')).toBe(true)
-    expect(supabase.from).toHaveBeenCalledWith('admin_users')
+    expect(supabase.from).toHaveBeenCalledWith('coffee_admin_users')
     expect(eq).toHaveBeenCalledWith('user_id', 'u1')
   })
 

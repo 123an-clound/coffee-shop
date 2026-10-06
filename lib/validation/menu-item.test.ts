@@ -6,7 +6,7 @@ const validInput = {
   name: 'Cà Phê Sữa Đá',
   description: 'Vị béo ngậy của sữa đặc hòa cùng cà phê phin đậm đà.',
   price: 45000,
-  image_url: 'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/a.jpg',
+  image_url: 'https://jtizooyjnllostamffpp.supabase.co/storage/v1/object/public/menu-images/a.jpg',
   is_available: true,
   is_featured: false,
   display_order: 0,
@@ -24,6 +24,13 @@ describe('parseMenuItemInput', () => {
   it('accepts an empty image_url', () => {
     const result = parseMenuItemInput({ ...validInput, image_url: '' })
     expect(result.image_url).toBe('')
+  })
+
+  it('rejects an image URL from the previous Supabase project', () => {
+    expect(() => parseMenuItemInput({
+      ...validInput,
+      image_url: 'https://previous-project.supabase.co/storage/v1/object/public/menu-images/a.jpg',
+    })).toThrow()
   })
 
   it('rejects a blank name', () => {

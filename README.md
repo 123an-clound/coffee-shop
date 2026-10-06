@@ -28,9 +28,13 @@ marketing/menu site and a small admin panel (categories, menu items) backed by S
    Leave `SUPABASE_SERVICE_ROLE_KEY` empty unless you're running the seed script (see below).
    Never commit real values for any of these.
 
-3. Apply the database migration. This project does not have the Supabase CLI wired up, so run
-   `supabase/migrations/0001_init.sql` manually via the Supabase dashboard's SQL editor (or the
-   `supabase` CLI's `db execute` if you have it installed separately).
+3. The shared production database is **Web-project** (`jtizooyjnllostamffpp`).
+   Coffee uses `coffee_categories`, `coffee_menu_items`, `coffee_admin_users` and
+   `coffee_site_settings`. Its Storage bucket is `menu-images`.
+   The migration has already been applied to Web-project. Do not replay `0001_init.sql`
+   there: the unprefixed `categories` and `menu_items` tables belong to Food-shop.
+   For a new, empty coffee-only database, apply all files in `supabase/migrations`
+   in order, including `20261006015842_namespace_coffee_tables.sql`.
 
 ## Running the app
 
@@ -58,10 +62,10 @@ This is a one-time/local script. Never commit the service role key or use it in 
 
 1. Sign up a user via Supabase Auth (e.g. the Supabase dashboard's Authentication -> Users ->
    Add user, or your own sign-up flow) and confirm that user's email.
-2. Grant that user admin access by inserting their user id into `admin_users`:
+2. Grant that user admin access by inserting their user id into `coffee_admin_users`:
 
    ```sql
-   insert into admin_users (user_id) values ('<the user''s auth.users.id>');
+   insert into coffee_admin_users (user_id) values ('<the user''s auth.users.id>');
    ```
 
 3. Log in at `/admin/login` with that account.

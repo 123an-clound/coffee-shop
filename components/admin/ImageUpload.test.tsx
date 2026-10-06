@@ -20,7 +20,7 @@ describe('ImageUpload', () => {
 
   it('uploads a selected file and calls onChange with the public URL', async () => {
     vi.mocked(uploadMenuImageAction).mockResolvedValue({
-      url: 'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/x.jpg',
+      url: 'https://jtizooyjnllostamffpp.supabase.co/storage/v1/object/public/menu-images/x.jpg',
     })
     const onChange = vi.fn()
     const user = userEvent.setup()
@@ -31,7 +31,7 @@ describe('ImageUpload', () => {
     await user.upload(input, file)
 
     expect(onChange).toHaveBeenCalledWith(
-      'https://xsspvdgnhelzprcqaiek.supabase.co/storage/v1/object/public/menu-images/x.jpg'
+      'https://jtizooyjnllostamffpp.supabase.co/storage/v1/object/public/menu-images/x.jpg'
     )
   })
 

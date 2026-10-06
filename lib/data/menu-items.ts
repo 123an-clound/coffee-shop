@@ -5,7 +5,7 @@ export async function getMenuItems(
   supabase: SupabaseClient,
   opts: { categoryId?: string } = {}
 ): Promise<MenuItem[]> {
-  let query = supabase.from('menu_items').select('*').order('display_order', { ascending: true })
+  let query = supabase.from('coffee_menu_items').select('*').order('display_order', { ascending: true })
 
   if (opts.categoryId) {
     query = query.eq('category_id', opts.categoryId)
@@ -21,7 +21,7 @@ export async function getFeaturedMenuItems(
   limit = 4
 ): Promise<MenuItem[]> {
   const { data, error } = await supabase
-    .from('menu_items')
+    .from('coffee_menu_items')
     .select('*')
     .eq('is_featured', true)
     .order('display_order', { ascending: true })
@@ -35,7 +35,7 @@ export async function createMenuItem(
   supabase: SupabaseClient,
   input: MenuItemInput
 ): Promise<MenuItem> {
-  const { data, error } = await supabase.from('menu_items').insert([input]).select().single()
+  const { data, error } = await supabase.from('coffee_menu_items').insert([input]).select().single()
   if (error) throw error
   return data as MenuItem
 }
@@ -46,7 +46,7 @@ export async function updateMenuItem(
   input: Partial<MenuItemInput>
 ): Promise<MenuItem> {
   const { data, error } = await supabase
-    .from('menu_items')
+    .from('coffee_menu_items')
     .update(input)
     .eq('id', id)
     .select()
@@ -56,6 +56,6 @@ export async function updateMenuItem(
 }
 
 export async function deleteMenuItem(supabase: SupabaseClient, id: string): Promise<void> {
-  const { error } = await supabase.from('menu_items').delete().eq('id', id)
+  const { error } = await supabase.from('coffee_menu_items').delete().eq('id', id)
   if (error) throw error
 }

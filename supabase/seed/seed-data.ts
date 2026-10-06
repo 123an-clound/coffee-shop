@@ -90,7 +90,7 @@ async function seed() {
 
   for (const category of categories) {
     const { data, error } = await supabase
-      .from('categories')
+      .from('coffee_categories')
       .insert([category])
       .select()
       .single()
@@ -115,7 +115,7 @@ async function seed() {
       display_order: order++,
     }
 
-    const { error } = await supabase.from('menu_items').insert([input])
+    const { error } = await supabase.from('coffee_menu_items').insert([input])
     if (error) throw error
   }
 
